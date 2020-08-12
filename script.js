@@ -56,6 +56,7 @@ app.post('/register', (req, res) => {
     const hash = bcrypt.hashSync(password, saltRounds);
     console.log(hash)
     db.transaction(trx => {
+        console.log('Entered Transaction')
         trx.insert({
             email: email,
             hash: hash
@@ -63,7 +64,7 @@ app.post('/register', (req, res) => {
         .into('login')
         .returning('email')
         .then(loginEmail => {
-            return trx('users')
+            return (trx('users')
             .returning('*')
             .insert({
                 email: loginEmail[0],
@@ -73,16 +74,15 @@ app.post('/register', (req, res) => {
             .then(user => {
                 console.log(user[0]);
                 res.json(user[0]);
-            })
+            }));
         })
         .then(trx.commit)
         .catch(trx.rollback)
     })
-
     .catch(err => {
         res.status(400).json('Unable to register')
     });
-})
+});
 
 app.get('/profile/:id', (req, res) => {
     const id = req.params.id;
