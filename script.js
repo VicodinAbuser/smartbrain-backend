@@ -16,7 +16,7 @@ const db = knex({
 });
 
 const clarifaiApp = new Clarifai.App({
- apiKey: process.env.APIKEY;
+ apiKey: process.env.APIKEY
 });
 
 const app = express();
