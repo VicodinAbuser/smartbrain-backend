@@ -55,8 +55,8 @@ app.post('/register', (req, res) => {
     }
     const hash = bcrypt.hashSync(password, saltRounds);
     console.log(hash)
+    console.log('Entered Transaction')
     db.transaction(trx => {
-        console.log('Entered Transaction')
         trx.insert({
             email: email,
             hash: hash
